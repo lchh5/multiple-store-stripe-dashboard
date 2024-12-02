@@ -46,6 +46,10 @@ STRIPE_SECRET_KEY_3=sk_live_xxxxx
 
 The project supports multiple deployment methods:
 
+> ⚠️ **Timezone Note**: Default timezone is set to Asia/Shanghai. If you need a different timezone, modify `TZ` in Dockerfile or docker-compose.yml. Currently there is a known timezone bug in production environment - manual timezone configuration is required.
+> 
+> 时区说明：默认时区设置为 Asia/Shanghai，如需修改请在 Dockerfile 或 docker-compose.yml 中设置 TZ 环境变量。目前生产环境中存在已知的时区 bug - 需要手动配置时区。
+
 1. **Local Development:**
 
    ```bash
