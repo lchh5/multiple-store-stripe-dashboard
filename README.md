@@ -2,6 +2,8 @@
 
 [English](#english) | [中文](#chinese)
 
+![Dashboard Preview](./docs/images/dashboard-preview.jpg)
+
 ## English
 
 A comprehensive dashboard for managing and analyzing payment data across multiple Stripe accounts. This project provides intuitive data visualization interfaces to help businesses and developers monitor their payment operations and revenue trends across different Stripe accounts.
