@@ -294,12 +294,48 @@ async function fetchMerchantData(
     console.log(`- ${payment.id}: ${payment.paymentType} ${payment.amount} ${payment.currency}`);
   });
 
+  // Fetch subscriptions
+  const allSubscriptions: Stripe.Subscription[] = [];
+  let hasMoreSubscriptions = true;
+  let startingAfterSubscription: string | undefined = undefined;
+
+  while (hasMoreSubscriptions) {
+    const subscriptions: any = await stripe.subscriptions.list({
+      status: 'active',
+      limit: 100,
+      starting_after: startingAfterSubscription,
+    });
+
+    allSubscriptions.push(...subscriptions.data);
+
+    if (subscriptions.has_more && subscriptions.data.length > 0) {
+      startingAfterSubscription = subscriptions.data[subscriptions.data.length - 1].id;
+    } else {
+      hasMoreSubscriptions = false;
+    }
+  }
+
+  // Filter for upcoming renewals
+  const upcomingRenewals = allSubscriptions
+    .filter(subscription => 
+      !subscription.cancel_at_period_end && 
+      subscription.status === 'active' &&
+      subscription.current_period_end >= startTimestamp &&
+      subscription.current_period_end <= endTimestamp
+    )
+    .map(subscription => ({
+      customerId: subscription.customer as string,
+      amount: subscription.items.data[0].price.unit_amount || 0,
+      currency: subscription.items.data[0].price.currency,
+      renewalDate: subscription.current_period_end,
+    }));
+
   return {
     totalOrders: processedPayments.length,
     totalAmount: processedPayments.reduce((sum: number, payment: any) => sum + payment.amount, 0),
     currency: processedPayments[0]?.currency || 'usd',
     payments: processedPayments,
     accountName,
-    upcomingRenewals: [],
+    upcomingRenewals,
   };
 } 
