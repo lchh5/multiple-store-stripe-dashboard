@@ -13,10 +13,10 @@ services:
       - dokploy-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.my-nextjs-app-http.rule=Host(`xxx.com`)"
+      - "traefik.http.routers.my-nextjs-app-http.rule=Host(`test.sdxl.me`)"
       - "traefik.http.routers.my-nextjs-app-http.entrypoints=web"
       - "traefik.http.routers.my-nextjs-app-http.middlewares=https-redirect"
-      - "traefik.http.routers.my-nextjs-app.rule=Host(`xxx.com`)"
+      - "traefik.http.routers.my-nextjs-app.rule=Host(`test.sdxl.me`)"
       - "traefik.http.routers.my-nextjs-app.entrypoints=websecure"
       - "traefik.http.routers.my-nextjs-app.tls.certResolver=letsencrypt"
       - "traefik.http.services.my-nextjs-app.loadbalancer.server.port=3000"
